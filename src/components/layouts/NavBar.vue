@@ -1,5 +1,5 @@
 <template>
-  <nav class="left-side-menu">
+  <nav class="left-side-menu left-side-menu-light">
       <div class="slimscroll-menu">
         <!-- LOGO -->
         <router-link to="/" class="logo text-center">
@@ -11,7 +11,7 @@
             </span>
         </router-link>
 
-        <ul class="metismenu side-nav">
+        <ul class="metismenu side-nav side-nav-light">
           <slot></slot>
         </ul>
       </div>
