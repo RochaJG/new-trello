@@ -32,16 +32,17 @@
         for (var file of chunk.files) {
           if (file.match(/\.(js|css)$/)) { %>
     <link rel="<%= chunk.initial?'preload':'prefetch' %>" href="<%= htmlWebpackPlugin.files.publicPath + file %>" as="<%= file.match(/\.css$/)?'style':'script' %>"><% }}} %>
+
   </head>
-  <body>
+  <body class="enlarged" data-keep-enlarged="false">
     <noscript>
       This is your fallback content in case JavaScript fails to load.
     </noscript>
     <div id="app"></div>
-
+    
     <!-- bundle -->
     <script src="/static/js/app.min.js"></script>
-
+    
     <!-- third party js -->
     <script src="/static/js/vendor/Chart.bundle.min.js"></script>
     <script src="/static/js/vendor/jquery-jvectormap-1.2.2.min.js"></script>
