@@ -37,7 +37,6 @@
 import PageTitle from '@/components/layouts/PageTitle'
 import BreadCrumbItem from '@/components/layouts/BreadCrumbItem'
 import CardBoards from '@/components/elements/CardBoards'
-var scope = {}
 
 export default {
     name: 'Boards',
@@ -48,18 +47,15 @@ export default {
     },
     data() {
         return {
-            scope: {}
         }
     },
-    created() {
-        // -----------------TRELLO API-----------------------
-
-        function onAuthorize() {
-            updateLoggedIn()
+    methods: {
+        getData() {
+            var vm = this
+            this.updateLoggedIn()
 
             Trello.members.get("me", function (member) {
-                scope.TrelloUser = member
-                console.log('Usuário: ', scope.TrelloUser)
+                vm.trelloUser = member
 
                 // Busca as boards do usuário
                 Trello.get("members/me/boards", function (boards) {
@@ -69,7 +65,7 @@ export default {
                             var myCards = []
                             $.each(cards, function (ix, card) {
                                 $.each(card.idMembers, function (ix, member) {
-                                    if (member == scope.TrelloUser.id) {
+                                    if (member == vm.trelloUser.id) {
                                         myCards.push(card)
                                     }
                                 })
@@ -77,36 +73,38 @@ export default {
                             board.cards = myCards
                         })
                     })
-                    scope.TrelloBoards = boards
+                    vm.trelloBoards = boards
+                    console.log(vm.trelloBoards)
                     console.log("------FIM-----")
-                    console.log(scope)
                 })
             })
-
-        }
-
-        function updateLoggedIn () {
-            scope.TrelloIsLoggedIn = Trello.authorized()
-        }
-
-        scope.TrelloLogout = function () {
+        },
+        updateLoggedIn () {
+            this.trelloStats = Trello.authorized()
+        },
+        trelloLogout () {
             Trello.deauthorize()
-            updateLoggedIn()
-        }
-
-        Trello.authorize({
-            interactive: false,
-            success: onAuthorize
-        })
-
-        function TrelloLogin () {
+            this.updateLoggedIn()
+        },
+        trelloLogin () {
             Trello.authorize({
                 type: "popup",
-                success: onAuthorize
+                success: this.getData
             })
         }
-
-        // -----------------TRELLO API END-----------------------
-    }
+    },
+    mounted() {
+        this.trelloStats = Trello.authorized()
+        if(!this.trelloStats) {
+            Trello.authorize({
+                type: 'popup',
+                name: 'New Trello',
+                interactive: true,
+                success: this.getData,
+            })
+        } else {
+            this.getData()
+        }
+    },
 }
 </script>
