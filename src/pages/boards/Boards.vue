@@ -7,27 +7,21 @@
         
         <div class="row mb-2">
             <div class="col-sm-12">
-                <div class="text-sm-right">
-                    <div class="btn-group mb-3">
-                        <button type="button" class="btn btn-primary">Todos</button>
-                    </div>
-                    <div class="btn-group mb-3 ml-1">
-                        <button type="button" class="btn btn-light">Atuais</button>
-                        <button type="button" class="btn btn-light">Finalizados</button>
-                    </div>
-                    <div class="btn-group mb-3 ml-2 d-none d-sm-inline-block">
-                        <button type="button" class="btn btn-dark"><i class="dripicons-view-apps"></i></button>
-                    </div>
-                    <div class="btn-group mb-3 d-none d-sm-inline-block">
-                        <button type="button" class="btn btn-link text-dark"><i class="dripicons-checklist"></i></button>
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title">Escolha um quadro</h4>
+                        <select class="custom-select mt-3" v-model="myBoard">
+                            <option selected disabled>Escolha o quadro</option>
+                            <option v-for="quadro in trelloBoards" :value="quadro" :key="quadro.id">{{quadro.name}}</option>
+                        </select>
                     </div>
                 </div>
             </div><!-- end col-->
         </div>
 
         <div class="row">
-            <div class="col-md-6 col-xl-3">
-                <card-boards/>
+            <div class="col-md-6 col-xl-3" v-for="card in myBoard.cards" :key="card.id">
+                <card-boards v-bind:card="card"/>
             </div>
         </div>
     </span>
@@ -47,6 +41,8 @@ export default {
     },
     data() {
         return {
+            trelloBoards: [],
+            myBoard: {}
         }
     },
     methods: {
@@ -74,8 +70,6 @@ export default {
                         })
                     })
                     vm.trelloBoards = boards
-                    console.log(vm.trelloBoards)
-                    console.log("------FIM-----")
                 })
             })
         },

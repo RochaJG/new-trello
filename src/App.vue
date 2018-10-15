@@ -36,4 +36,13 @@ export default {
     MenuLink,
   },
 }
+
+String.prototype.URLToAnchors = function() {
+  // var regexp = /(?:www\.|(?!www))[^\s\.]+\.[^\s]{2,}|www\.[^\s]+\.[^\s]{2,}/gi
+  // var matches_array = this.match(regexp)
+  // for (var i = 0; i < matches_array.length; i++){
+  //     $("#result").append('<a href="http://'+matches_array[i]+'" title="'+matches_array[i]+'">'+matches_array[i]+'</a>')
+  // }
+  return this.replace(/((?:http(s)?:\/\/)?(?:www(\d)?\.)?([\w\-]+\.\w{2,})\/?((?:\?(?:[\w\-]+(?:=[\w\-]+)?)?(?:&[\w\-]+(?:=[\w\-]+)?)?))?(#(?:[^\s]+)?)?)/gi, '<a href="http$2://www$3.$4$5">$1</a>')
+}
 </script>

@@ -7,23 +7,16 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-right">
                     <!-- item-->
-                    <a href class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Edit</a>
-                    <!-- item-->
-                    <a href class="dropdown-item"><i class="mdi mdi-delete mr-1"></i>Delete</a>
-                    <!-- item-->
-                    <a href class="dropdown-item"><i class="mdi mdi-email-outline mr-1"></i>Invite</a>
-                    <!-- item-->
-                    <a href class="dropdown-item"><i class="mdi mdi-exit-to-app mr-1"></i>Leave</a>
+                    <a href class="dropdown-item"><i class="mdi mdi-pencil mr-1"></i>Editar</a>
                 </div>
             </div>
             <!-- project title-->
             <h4 class="mt-0">
-                <a href class="text-dark">App design and development</a>
+                <a :href="card.shortUrl" target="_blank" class="text-dark">{{card.name}}</a>
             </h4>
-            <div class="badge badge-success badge-pill">Finished</div>
+            <div v-for="badge in card.labels" :key="badge.id" :class="'badge badge-' + badge.color + ' badge-pill'">{{badge.name}}</div>
 
-            <p class="text-muted font-13 mb-3">With supporting text below as a natural lead-in to additional contenposuere erat a ante...<a href class="font-weight-bold text-muted">view more</a>
-            </p>
+            <span class="text-muted font-13 mb-3">{{card.desc.URLToAnchors()}}</span>
 
             <!-- project detail-->
             <p class="mb-1">
@@ -62,6 +55,34 @@
 <script>
 export default {
     name: 'CardBoards',
-    props: {}
+    props: {
+        card: Object
+    }
 }
 </script>
+
+<style scoped>
+.badge-red {
+    color: #fff;
+    background-color: #f9375e;
+    border-color: #f82b54;
+}
+
+.badge-orange {
+    color: #fff;
+    background-color: #FF5722;
+    border-color: rgb(255, 78, 24);
+}
+
+.badge-black {
+    color: #fff;
+    background-color: #37474F;
+    border-color: #263238;
+}
+
+.badge-green {
+    color: #fff;
+    background-color: #7CB342;
+    border-color: #689F38;
+}
+</style>

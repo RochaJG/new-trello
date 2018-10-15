@@ -9,6 +9,7 @@
 			</span>
 			<span>
 				<span class="account-user-name">{{trelloUser.fullName}}</span>
+				<span class="account-position text-info">@{{trelloUser.username}}</span>
 			</span>
 		</a>
 		<div class="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown ">
@@ -60,6 +61,11 @@ export default {
 			Trello.authorize({
 				//type: 'popup',
 				name: 'New Trello',
+				scope: {
+					read: 'true',
+					write: 'true'
+				},
+				expiration: 'never',
 				interactive: true,
 				success: this.autoUpdate()
 			})
