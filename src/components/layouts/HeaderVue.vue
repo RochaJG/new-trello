@@ -5,7 +5,7 @@
 		<a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="index.html#" role="button" aria-haspopup="false"
 			aria-expanded="false">
 			<span class="account-user-avatar"> 
-				<img src="/static/img/profile.png" alt="user-image" class="rounded-circle">
+				<img :src="trelloUser.avatarUrl + '/50.png'" alt="user-image" class="rounded-circle">
 			</span>
 			<span>
 				<span class="account-user-name">{{trelloUser.fullName}}</span>
@@ -37,7 +37,7 @@ export default {
 	name: 'HeaderVue',
 	data() {
 		return {
-				trelloUser: {}
+			trelloUser: {}
 		}
 	},
 	methods: {

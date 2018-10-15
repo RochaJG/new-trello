@@ -16,7 +16,7 @@
             </h4>
             <div v-for="badge in card.labels" :key="badge.id" :class="'badge badge-' + badge.color + ' badge-pill'">{{badge.name}}</div>
 
-            <span class="text-muted font-13 mb-3">{{card.desc.URLToAnchors()}}</span>
+            <p class="text-muted font-13 mb-3">{{card.desc}}</p>
 
             <!-- project detail-->
             <p class="mb-1">
@@ -30,13 +30,11 @@
                 </span>
             </p>
             <div>
-                <a href data-toggle="tooltip" data-placement="top" title="" data-original-title="Mat Helme" class="d-inline-block">
-                    <img src="/static/img/profile.png" class="rounded-circle avatar-xs" alt="friend">
-                </a>
+                <!-- <a href data-toggle="tooltip" data-placement="top" title="" :data-original-title="card.members[0].fullName" class="d-inline-block">
+                    <img :src="card.members[0].avatarUrl + '/50.png'" class="rounded-circle avatar-xs" alt="Membro" v-if="card.members[0].avatarUrl">
+                </a> -->
 
-                <a href class="d-inline-block text-dark font-weight-bold ml-2">
-                    +7 more
-                </a>
+                <a class="d-inline-block text-dark font-weight-bold ml-2" v-if="card.idMembers.length">{{card.idMembers.length}} membros</a>
             </div>
         </div> <!-- end card-body-->
         <ul class="list-group list-group-flush">
@@ -57,6 +55,15 @@ export default {
     name: 'CardBoards',
     props: {
         card: Object
+    },
+    mounted() {
+        var card = this.card
+        card.members = []
+        $.each(card.idMembers, (ix, id) => {
+            Trello.get(`members/${id}`, (member) => {
+                card.members.push(member)
+            })
+        })
     }
 }
 </script>
