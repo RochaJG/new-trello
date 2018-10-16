@@ -25,7 +25,7 @@
 				</div>
 
 				<!-- All-->
-				<a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+				<a href="javascript:void(0);" v-if="userNotif.length>7" class="dropdown-item text-center text-primary notify-item notify-all">
 					Ver tudo
 				</a>
 

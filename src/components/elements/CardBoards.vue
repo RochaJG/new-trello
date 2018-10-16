@@ -16,7 +16,7 @@
             </h4>
             <div v-for="badge in card.labels" :key="badge.id" :class="'badge badge-' + badge.color + ' badge-pill'">{{badge.name}}</div>
 
-            <p class="text-muted font-13 mb-3">{{card.desc}}</p>
+            <p class="text-muted font-13 mb-3" v-html="card.desc.URLToAnchors()"></p>
 
             <!-- project detail-->
             <p class="mb-1">

@@ -1,5 +1,5 @@
 <template>
-    <a href="javascript:void(0);" class="dropdown-item notify-item">
+    <a :href="'https://trello.com/c/' + notif.data.card.shortLink" target="_blank" class="dropdown-item notify-item">
         <div :class="'notify-icon bg-' + infoToNotif.color">
             <i :class="'mdi mdi-'+ infoToNotif.icon"></i>
         </div>
