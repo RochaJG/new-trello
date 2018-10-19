@@ -5,24 +5,12 @@
             <bread-crumb-item text="Quadros"/>
         </page-title>
         
-        <div class="row mb-2">
-            <div class="col-sm-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h4 class="header-title">Escolha um quadro</h4>
-                        <select class="custom-select mt-3" v-model="myBoard">
-                            <option selected disabled>Escolha o quadro</option>
-                            <option v-for="quadro in trelloBoards" :value="quadro" :key="quadro.id">{{quadro.name}}</option>
-                        </select>
-                    </div>
-                </div>
+        <div class="row" v-for="org in trelloOrgs" :key="org.id">
+            <h3 class="col-12">{{org.displayName}}</h3>
+            <h6 class="col-12">{{org.desc}}</h6>
+            <div class="col-3" v-for="board in org.boards" :key="board.id">
+                <board-item :board="board" />
             </div><!-- end col-->
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 col-xl-3" v-for="card in myBoard.cards" :key="card.id">
-                <card-boards v-bind:card="card"/>
-            </div>
         </div>
     </span>
 </template>
@@ -30,19 +18,18 @@
 <script>
 import PageTitle from '@/components/layouts/PageTitle'
 import BreadCrumbItem from '@/components/layouts/BreadCrumbItem'
-import CardBoards from '@/components/elements/CardBoards'
+import BoardItem from '@/components/elements/BoardItem'
 
 export default {
     name: 'Boards',
     components: {
         PageTitle,
         BreadCrumbItem,
-        CardBoards,
+        BoardItem,
     },
     data() {
         return {
-            trelloBoards: [],
-            myBoard: {}
+            trelloOrgs: []
         }
     },
     methods: {
@@ -53,23 +40,16 @@ export default {
             Trello.members.get("me", function (member) {
                 vm.trelloUser = member
 
-                // Busca as boards do usuário
-                Trello.get("members/me/boards", function (boards) {
-                    $.each(boards, function (ix, board) {
-                        //Busca cards abertas de cada board do usuário
-                        Trello.get(`boards/${board.shortLink}/cards/open`, function (cards) {
-                            var myCards = []
-                            $.each(cards, function (ix, card) {
-                                $.each(card.idMembers, function (ix, member) {
-                                    if (member == vm.trelloUser.id) {
-                                        myCards.push(card)
-                                    }
-                                })
-                            })
-                            board.cards = myCards
+                // Busca organizações do usuário
+                Trello.get(`members/me/organizations`, function(orgs) {
+                    vm.trelloOrgs = orgs
+
+                    $.each(orgs, function (ix, org) {
+                        // Busca as boards do usuário de acordo com a organização
+                        Trello.get(`organizations/${org.id}/boards`, function (boards) {
+                            vm.$set(org, 'boards', boards)
                         })
                     })
-                    vm.trelloBoards = boards
                 })
             })
         },
@@ -87,7 +67,7 @@ export default {
             })
         }
     },
-    mounted() {
+    created() {
         this.trelloStats = Trello.authorized()
         if(!this.trelloStats) {
             Trello.authorize({
