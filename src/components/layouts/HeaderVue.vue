@@ -2,7 +2,7 @@
 	<div class="navbar-custom">
 	<ul class="list-unstyled topbar-right-menu float-right mb-0">
 		<li class="dropdown notification-list">
-			<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href role="button" aria-haspopup="false" aria-expanded="false">
+			<a class="nav-link dropdown-toggle arrow-none" data-toggle="dropdown" href role="button" aria-haspopup="false" aria-expanded="false" @click="hadNotif = false">
 				<i class="dripicons-bell noti-icon"></i>
 				<span class="noti-icon-badge" v-show="hadNotif"></span>
 			</a>
@@ -122,9 +122,13 @@ export default {
 				var unreads = []
 				for(var notf of notifications) {
 					if(notf.unread) {
-						vm.hadNotif = true
 						unreads.push(notf)
 					}
+				}
+				if(vm.userNotif < unreads) {
+					vm.hadNotif = true
+				} else if(vm.userNotif[-1].id != unreads[-1].id) {
+					vm.hadNotif = true
 				}
 				vm.userNotif = unreads
 			})
