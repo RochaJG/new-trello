@@ -33,7 +33,7 @@
 		</li>
 
 		<li class="dropdown notification-list">
-			<a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href="index.html#" role="button" aria-haspopup="false"
+			<a class="nav-link dropdown-toggle nav-user arrow-none mr-0" data-toggle="dropdown" href role="button" aria-haspopup="false"
 				aria-expanded="false">
 				<span class="account-user-avatar"> 
 					<img :src="trelloUser.avatarUrl + '/50.png'" alt="user-image" class="rounded-circle">
@@ -118,7 +118,7 @@ export default {
 		},
 		trelloNotifications() {
 			var vm = this
-			Trello.get(`members/${this.trelloUser.id}/notifications`, notifications => {
+			Trello.get(`members/${vm.trelloUser.id}/notifications`, notifications => {
 				var unreads = []
 				for(var notf of notifications) {
 					if(notf.unread) {
@@ -129,20 +129,29 @@ export default {
 				vm.userNotif = unreads
 			})
 		},
-		// Função para atualizar a cada 3 segundos
+		// Função para atualizar a cada 1 segundos
 		autoUpdate() {			
 			this.updateDataInterval = setInterval(function () {
 				this.loadTrelloInfo()
-			}.bind(this), 3000)
+			}.bind(this), 1000)
 		}
 	},
-	mounted() {
+	created() {
 		this.trelloStats = Trello.authorized()
 		if(!this.trelloStats) {
 			this.trelloLogin()
 		}
 		this.loadTrelloInfo()
 
+		$('.slimscroll').slimscroll({
+			height: '300px',
+			position: 'right',
+            size: '8px',
+            touchScrollStep: 20,
+            color: '#9ea5ab'
+		})
+	},
+	mounted() {
 		$('.slimscroll').slimscroll({
 			height: '300px',
 			position: 'right',

@@ -7,7 +7,7 @@
         <p class="text-muted mb-0 user-msg">
             <b>{{infoToNotif.message}}{{notif.data.card.name}}</b>
             <br>
-            <small>há 5 minutos</small>
+            <small>há {{notif.elapsedTime}}</small>
         </p>
     </a>
 </template>
@@ -30,6 +30,24 @@ export default {
             ]
         }
     },
+    methods: {
+        calcElapsedTime() {
+            let vm = this
+            let diff = moment().diff(moment(vm.notif.date), 'minutes')
+
+            if(diff < 60) {
+                vm.$set(vm.notif, 'elapsedTime', `${diff} minutos`)
+            } else {
+                diff = moment().diff(moment(vm.notif.date), 'hours')
+                if(diff < 60) {
+                    vm.$set(vm.notif, 'elapsedTime', `${diff} horas`)
+                } else {
+                    diff = moment().diff(moment(vm.notif.date), 'days')
+                    vm.$set(vm.notif, 'elapsedTime', `${diff} dias`)
+                }
+            }
+        }
+    },
     computed: {
         infoToNotif() {
             var resp = {
@@ -45,6 +63,12 @@ export default {
 
             return resp
         }
+    },
+    created() {
+        this.calcElapsedTime()
+    },
+    updated() {
+        this.calcElapsedTime()
     }
 }
 </script>
