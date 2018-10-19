@@ -127,7 +127,7 @@ export default {
 				}
 				if(vm.userNotif < unreads) {
 					vm.hadNotif = true
-				} else if(vm.userNotif[-1].id != unreads[-1].id) {
+				} else if(vm.userNotif[vm.userNotif.length-1].id != unreads[unreads.length-1].id) {
 					vm.hadNotif = true
 				}
 				vm.userNotif = unreads
