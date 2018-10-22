@@ -3,7 +3,7 @@
         <div :class="'notify-icon bg-' + infoToNotif.color">
             <i :class="'mdi mdi-'+ infoToNotif.icon"></i>
         </div>
-        <p class="notify-details">{{notif.memberCreator.fullName}}</p>
+        <p class="notify-details" v-if="notif.memberCreator">{{notif.memberCreator.fullName}}</p>
         <p class="text-muted mb-0 user-msg">
             <b>{{infoToNotif.message}}{{notif.data.card.name}}</b>
             <br>
